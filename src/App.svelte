@@ -85,7 +85,7 @@
   }
   .form {
     display: inline-grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, max-content);
   }
   .report {
     display: inline-block;
@@ -109,8 +109,7 @@
         max="10"
         step="1" />
     </div>
-    <div />
-    <div>
+    <div style="grid-column: 1;">
       <label>Warmup-speed:</label>
       <input
         type="number"
@@ -128,11 +127,11 @@
         bind:value={utime}
         name="utime"
         min="1"
-        max="10"
+        max="20"
         step="0.25" />
       min
     </div>
-    <div>
+    <div style="grid-column: 1;">
       <label>Walk-speed:</label>
       <input
         type="number"
@@ -154,7 +153,7 @@
         step="0.25" />
       min
     </div>
-    <div>
+    <div style="grid-column: 1;">
       <label>Run-speed:</label>
       <input
         type="number"
@@ -172,7 +171,7 @@
         bind:value={rtime}
         name="rtime"
         min="1"
-        max="10"
+        max="120"
         step="0.25" />
       min
     </div>
