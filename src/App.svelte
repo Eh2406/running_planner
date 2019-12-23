@@ -7,22 +7,23 @@
   let rtime = 17;
   let rspeed = 4.4;
 
+  $: udist = (utime / 60) * uspeed;
+  $: rdist = (rtime / 60) * rspeed;
+  $: wdist = (wtime / 60) * wspeed;
+
   $: ttime = 2 * utime + reps * (wtime + rtime) - wtime;
-  $: tdist =
-    2 * ((utime / 60) * uspeed) +
-    reps * ((wtime / 60) * wspeed + (rtime / 60) * rspeed) -
-    (wtime / 60) * wspeed;
+  $: tdist = 2 * udist + reps * (wdist + rdist) - wdist;
 
   $: arrayOfIntervals = (() => {
     let timeSoFar = 0;
     let distSoFar = 0;
     let out = [];
     timeSoFar += utime;
-    distSoFar += (utime / 60) * uspeed;
+    distSoFar += udist;
     out.push({
       type: "warmup",
       time: utime,
-      dist: (utime / 60) * uspeed,
+      dist: udist,
       speed: uspeed,
       timeSoFar,
       distSoFar
@@ -30,22 +31,22 @@
 
     for (let i = 0; i < reps; i += 1) {
       timeSoFar += rtime;
-      distSoFar += (rtime / 60) * rspeed;
+      distSoFar += rdist;
       out.push({
         type: "run",
         time: rtime,
-        dist: (rtime / 60) * rspeed,
+        dist: rdist,
         speed: rspeed,
         timeSoFar,
         distSoFar
       });
       if (i + 1 !== reps) {
         timeSoFar += wtime;
-        distSoFar += (wtime / 60) * wspeed;
+        distSoFar += wdist;
         out.push({
           type: "walk",
           time: wtime,
-          dist: (wtime / 60) * wspeed,
+          dist: wdist,
           speed: wspeed,
           timeSoFar,
           distSoFar
@@ -54,11 +55,11 @@
     }
 
     timeSoFar += utime;
-    distSoFar += (utime / 60) * uspeed;
+    distSoFar += udist;
     out.push({
       type: "warmup",
       time: utime,
-      dist: (utime / 60) * uspeed,
+      dist: udist,
       speed: uspeed,
       timeSoFar,
       distSoFar
@@ -131,6 +132,7 @@
         step="0.25" />
       min
     </div>
+    <div>{udist.toFixed(2)} mile</div>
     <div style="grid-column: 1;">
       <label>Walk-speed:</label>
       <input
@@ -153,6 +155,7 @@
         step="0.25" />
       min
     </div>
+    <div>{wdist.toFixed(2)} mile</div>
     <div style="grid-column: 1;">
       <label>Run-speed:</label>
       <input
@@ -175,6 +178,7 @@
         step="0.25" />
       min
     </div>
+    <div>{rdist.toFixed(2)} mile</div>
   </div>
   <div class="report">
     <h2>This will take {ttime} min</h2>
