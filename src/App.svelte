@@ -12,17 +12,70 @@
     2 * ((utime / 60) * uspeed) +
     reps * ((wtime / 60) * wspeed + (rtime / 60) * rspeed) -
     (wtime / 60) * wspeed;
+
+  $: arrayOfIntervals = (() => {
+    let timeSoFar = 0;
+    let distSoFar = 0;
+    let out = [];
+    timeSoFar += utime;
+    distSoFar += (utime / 60) * uspeed;
+    out.push({
+      type: "warmup",
+      time: utime,
+      dist: (utime / 60) * uspeed,
+      speed: uspeed,
+      timeSoFar,
+      distSoFar
+    });
+
+    for (let i = 0; i < reps; i += 1) {
+      timeSoFar += rtime;
+      distSoFar += (rtime / 60) * rspeed;
+      out.push({
+        type: "run",
+        time: rtime,
+        dist: (rtime / 60) * rspeed,
+        speed: rspeed,
+        timeSoFar,
+        distSoFar
+      });
+      if (i + 1 !== reps) {
+        timeSoFar += wtime;
+        distSoFar += (wtime / 60) * wspeed;
+        out.push({
+          type: "walk",
+          time: wtime,
+          dist: (wtime / 60) * wspeed,
+          speed: wspeed,
+          timeSoFar,
+          distSoFar
+        });
+      }
+    }
+
+    timeSoFar += utime;
+    distSoFar += (utime / 60) * uspeed;
+    out.push({
+      type: "warmup",
+      time: utime,
+      dist: (utime / 60) * uspeed,
+      speed: uspeed,
+      timeSoFar,
+      distSoFar
+    });
+    return out;
+  })();
 </script>
 
 <style>
   .warmup {
-    background-color: #3f79f7;
+    background-color: rgba(63, 121, 247, 0.5);
   }
   .run {
-    background-color: rgb(30, 255, 0);
+    background-color: rgb(30, 255, 0, 0.5);
   }
   .walk {
-    background-color: rgb(255, 0, 0);
+    background-color: rgb(255, 0, 0, 0.5);
   }
   .row-cart {
     display: flex;
@@ -38,7 +91,7 @@
   }
   .all {
     display: flex;
-  	justify-content: space-evenly;
+    justify-content: space-evenly;
   }
 </style>
 
@@ -112,55 +165,34 @@
   <div class="report">
     <h2>This will take {ttime} min</h2>
     <div class="row-cart">
-      <div class="warmup" style="width: {100 * (utime / ttime)}%;">&nbsp;</div>
-      {#each new Array(reps) as _, i}
-        <div class="run" style="width: {100 * (rtime / ttime)}%;">&nbsp;</div>
-        {#if i + 1 !== reps}
-          <div class="walk" style="width: {100 * (wtime / ttime)}%;">
-            &nbsp;
-          </div>
-        {/if}
+      {#each arrayOfIntervals as interval}
+        <div
+          class={interval.type}
+          style="width: {100 * (interval.time / ttime)}%;">
+          &nbsp;
+        </div>
       {/each}
-      <div class="warmup" style="width: {100 * (utime / ttime)}%;">&nbsp;</div>
     </div>
     <h2>
       and will go {tdist.toFixed(2)} miles / {(tdist * 1.60934).toFixed(2)} km
     </h2>
     <div class="row-cart">
-      <div
-        class="warmup"
-        style="width: {100 * (((utime / 60) * uspeed) / tdist)}%;">
-        &nbsp;
-      </div>
-      {#each new Array(reps) as _, i}
+      {#each arrayOfIntervals as interval}
         <div
-          class="run"
-          style="width: {100 * (((rtime / 60) * rspeed) / tdist)}%;">
+          class={interval.type}
+          style="width: {100 * (interval.dist / tdist)}%;">
           &nbsp;
         </div>
-        {#if i + 1 !== reps}
-          <div
-            class="walk"
-            style="width: {100 * (((wtime / 60) * wspeed) / tdist)}%;">
-            &nbsp;
-          </div>
-        {/if}
       {/each}
-      <div
-        class="warmup"
-        style="width: {100 * (((utime / 60) * uspeed) / tdist)}%;">
-        &nbsp;
-      </div>
     </div>
     <ol>
-      <li>Warmup: {utime} @ {uspeed} mph</li>
-      {#each new Array(reps) as _, i}
-        <li>Run: {rtime} @ {rspeed} mph</li>
-        {#if i + 1 !== reps}
-          <li>Walk: {wtime} @ {wspeed} mph</li>
-        {/if}
+      {#each arrayOfIntervals as interval}
+        <li class={interval.type}>
+          {{ warmup: '🧘', run: '🏃', walk: '🚶' }[interval.type]}: {interval.time}
+          @ {interval.speed} mph. Stoping at {interval.distSoFar.toFixed(2)}
+          mile / {(interval.distSoFar * 1.60934).toFixed(2)}. km
+        </li>
       {/each}
-      <li>Cooldown: {utime} @ {uspeed} mph</li>
     </ol>
   </div>
 
