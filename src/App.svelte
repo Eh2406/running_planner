@@ -16,13 +16,13 @@
 
 <style>
   .warmup {
-    background-color: brown;
+    background-color: #3f79f7;
   }
   .run {
-    background-color: red;
+    background-color: rgb(30, 255, 0);
   }
   .walk {
-    background-color: yellow;
+    background-color: rgb(255, 0, 0);
   }
   .row-cart {
     display: flex;
