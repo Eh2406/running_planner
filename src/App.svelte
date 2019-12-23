@@ -1,4 +1,6 @@
 <script>
+  import SpeedTime from "./SpeedTime.svelte";
+
   let reps = 3;
   let utime = 5;
   let uspeed = 3.2;
@@ -110,75 +112,24 @@
         max="10"
         step="1" />
     </div>
-    <div style="grid-column: 1;">
-      <label>Warmup-speed:</label>
-      <input
-        type="number"
-        bind:value={uspeed}
-        name="uspeed"
-        min="1"
-        max="7"
-        step="0.1" />
-      mph
-    </div>
-    <div>
-      <label>Warmup-time:</label>
-      <input
-        type="number"
-        bind:value={utime}
-        name="utime"
-        min="1"
-        max="20"
-        step="0.25" />
-      min
-    </div>
-    <div>{udist.toFixed(2)} mile</div>
-    <div style="grid-column: 1;">
-      <label>Walk-speed:</label>
-      <input
-        type="number"
-        bind:value={wspeed}
-        name="wspeed"
-        min="1"
-        max="7"
-        step="0.1" />
-      mph
-    </div>
-    <div>
-      <label>Walk-time:</label>
-      <input
-        type="number"
-        bind:value={wtime}
-        name="wtime"
-        min="1"
-        max="10"
-        step="0.25" />
-      min
-    </div>
-    <div>{wdist.toFixed(2)} mile</div>
-    <div style="grid-column: 1;">
-      <label>Run-speed:</label>
-      <input
-        type="number"
-        bind:value={rspeed}
-        name="rspeed"
-        min="1"
-        max="7"
-        step="0.1" />
-      mph
-    </div>
-    <div>
-      <label>Run-time:</label>
-      <input
-        type="number"
-        bind:value={rtime}
-        name="rtime"
-        min="1"
-        max="120"
-        step="0.25" />
-      min
-    </div>
-    <div>{rdist.toFixed(2)} mile</div>
+    <SpeedTime 
+      preaf='Warmup'
+      bind:speed={uspeed}
+      bind:time={utime}
+      bind:dist={udist}
+    />
+    <SpeedTime 
+      preaf='Walk'
+      bind:speed={wspeed}
+      bind:time={wtime}
+      bind:dist={wdist}
+    />
+    <SpeedTime 
+      preaf='Run'
+      bind:speed={rspeed}
+      bind:time={rtime}
+      bind:dist={rdist}
+    />
   </div>
   <div class="report">
     <h2>This will take {ttime} min</h2>
