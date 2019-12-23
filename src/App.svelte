@@ -112,27 +112,24 @@
         max="10"
         step="1" />
     </div>
-    <SpeedTime 
-      preaf='Warmup'
+    <SpeedTime
+      preaf="Warmup"
       bind:speed={uspeed}
       bind:time={utime}
-      bind:dist={udist}
-    />
-    <SpeedTime 
-      preaf='Walk'
+      bind:dist={udist} />
+    <SpeedTime
+      preaf="Walk"
       bind:speed={wspeed}
       bind:time={wtime}
-      bind:dist={wdist}
-    />
-    <SpeedTime 
-      preaf='Run'
+      bind:dist={wdist} />
+    <SpeedTime
+      preaf="Run"
       bind:speed={rspeed}
       bind:time={rtime}
-      bind:dist={rdist}
-    />
+      bind:dist={rdist} />
   </div>
   <div class="report">
-    <h2>This will take {ttime} min</h2>
+    <h2>This will take {ttime.toFixed(2)} min</h2>
     <div class="row-cart">
       {#each arrayOfIntervals as interval}
         <div
