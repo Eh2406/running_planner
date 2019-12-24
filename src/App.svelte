@@ -151,15 +151,19 @@
         </div>
       {/each}
     </div>
-    <ol>
-      {#each arrayOfIntervals as interval}
-        <li class={interval.type}>
-          {{ warmup: '🧘', run: '🏃', walk: '🚶' }[interval.type]}: {interval.time}
-          @ {interval.speed} mph. Stoping at {interval.distSoFar.toFixed(2)}
-          mile / {(interval.distSoFar * 1.60934).toFixed(2)}. km
-        </li>
+    <table>
+      {#each arrayOfIntervals as interval, i}
+        <tr class={interval.type}>
+          <th>{i + 1}</th>
+          <td>{{ warmup: '🧘', run: '🏃', walk: '🚶' }[interval.type]}</td>
+          <td>{interval.time} @ {interval.speed} mph</td>
+          <td>
+            Stoping at {interval.distSoFar.toFixed(2)} mile / {(interval.distSoFar * 1.60934).toFixed(2)}
+            km
+          </td>
+        </tr>
       {/each}
-    </ol>
+    </table>
   </div>
 
 </div>
