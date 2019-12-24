@@ -1,15 +1,16 @@
 <script>
   import SpeedTime from "./SpeedTime.svelte";
 
+  export let reps = 3;
+  export let utime = 5;
+  export let uspeed = 3.2;
+  export let wtime = 1;
+  export let wspeed = 3.2;
+  export let rtime = 17;
+  export let rspeed = 4.4;
+
   let expanded = true;
 
-  let reps = 3;
-  let utime = 5;
-  let uspeed = 3.2;
-  let wtime = 1;
-  let wspeed = 3.2;
-  let rtime = 17;
-  let rspeed = 4.4;
 
   $: udist = (utime / 60) * uspeed;
   $: rdist = (rtime / 60) * rspeed;
