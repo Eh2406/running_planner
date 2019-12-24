@@ -1,7 +1,9 @@
 <script>
   import Runs from "./Runs.svelte";
 
-  let runs = [];
+  let runs = JSON.parse(localStorage.getItem("runs")) || [];
+
+  $: localStorage.setItem("runs", JSON.stringify(runs));
 
   function addARun() {
     runs.push({
@@ -15,7 +17,9 @@
     });
     runs = runs;
   }
-  addARun();
+  if (runs.length === 0) {
+    addARun();
+  }
 </script>
 
 <style>
@@ -33,3 +37,9 @@
   {/each}
 </ol>
 <button on:click={addARun}>+</button>
+<button
+  on:click={() => {
+    runs = [];
+  }}>
+  Clere All
+</button>
