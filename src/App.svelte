@@ -1,6 +1,8 @@
 <script>
   import SpeedTime from "./SpeedTime.svelte";
 
+  let expanded = true;
+
   let reps = 3;
   let utime = 5;
   let uspeed = 3.2;
@@ -72,13 +74,13 @@
 
 <style>
   .warmup {
-    background-color: rgba(63, 121, 247, 0.5);
+    background-color: rgba(63, 121, 247, 0.75);
   }
   .run {
-    background-color: rgb(30, 255, 0, 0.5);
+    background-color: rgb(30, 255, 0, 0.75);
   }
   .walk {
-    background-color: rgb(255, 0, 0, 0.5);
+    background-color: rgb(255, 0, 0, 0.75);
   }
   .row-cart {
     display: flex;
@@ -96,74 +98,83 @@
   .all {
     display: flex;
     justify-content: space-evenly;
+    background-color: lightgray;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 20px;
   }
 </style>
 
 <h1>Let's plan a run! :)</h1>
 <div class="all">
-  <div class="form">
-    <div>
-      <label>Reps:</label>
-      <input
-        type="number"
-        bind:value={reps}
-        name="reps"
-        min="1"
-        max="10"
-        step="1" />
+  <input type="checkbox" bind:checked={expanded} />
+  {#if expanded}
+    <div class="form">
+      <div>
+        <label>Reps:</label>
+        <input
+          type="number"
+          bind:value={reps}
+          name="reps"
+          min="1"
+          max="10"
+          step="1" />
+      </div>
+      <SpeedTime
+        preaf="Warmup"
+        bind:speed={uspeed}
+        bind:time={utime}
+        bind:dist={udist} />
+      <SpeedTime
+        preaf="Walk"
+        bind:speed={wspeed}
+        bind:time={wtime}
+        bind:dist={wdist} />
+      <SpeedTime
+        preaf="Run"
+        bind:speed={rspeed}
+        bind:time={rtime}
+        bind:dist={rdist} />
     </div>
-    <SpeedTime
-      preaf="Warmup"
-      bind:speed={uspeed}
-      bind:time={utime}
-      bind:dist={udist} />
-    <SpeedTime
-      preaf="Walk"
-      bind:speed={wspeed}
-      bind:time={wtime}
-      bind:dist={wdist} />
-    <SpeedTime
-      preaf="Run"
-      bind:speed={rspeed}
-      bind:time={rtime}
-      bind:dist={rdist} />
-  </div>
-  <div class="report">
-    <h2>This will take {ttime.toFixed(2)} min</h2>
-    <div class="row-cart">
-      {#each arrayOfIntervals as interval}
-        <div
-          class={interval.type}
-          style="width: {100 * (interval.time / ttime)}%;">
-          &nbsp;
-        </div>
-      {/each}
+    <div class="report">
+      <h2>This will take {ttime.toFixed(2)} min</h2>
+      <div class="row-cart">
+        {#each arrayOfIntervals as interval}
+          <div
+            class={interval.type}
+            style="width: {100 * (interval.time / ttime)}%;">
+            &nbsp;
+          </div>
+        {/each}
+      </div>
+      <h2>
+        and will go {tdist.toFixed(2)} miles / {(tdist * 1.60934).toFixed(2)} km
+      </h2>
+      <div class="row-cart">
+        {#each arrayOfIntervals as interval}
+          <div
+            class={interval.type}
+            style="width: {100 * (interval.dist / tdist)}%;">
+            &nbsp;
+          </div>
+        {/each}
+      </div>
+      <table>
+        {#each arrayOfIntervals as interval, i}
+          <tr class={interval.type}>
+            <th>{i + 1}</th>
+            <td>{{ warmup: '🧘', run: '🏃', walk: '🚶' }[interval.type]}</td>
+            <td>{interval.time} @ {interval.speed} mph</td>
+            <td>
+              Stoping at {interval.distSoFar.toFixed(2)} mile / {(interval.distSoFar * 1.60934).toFixed(2)}
+              km
+            </td>
+          </tr>
+        {/each}
+      </table>
     </div>
-    <h2>
-      and will go {tdist.toFixed(2)} miles / {(tdist * 1.60934).toFixed(2)} km
-    </h2>
-    <div class="row-cart">
-      {#each arrayOfIntervals as interval}
-        <div
-          class={interval.type}
-          style="width: {100 * (interval.dist / tdist)}%;">
-          &nbsp;
-        </div>
-      {/each}
-    </div>
-    <table>
-      {#each arrayOfIntervals as interval, i}
-        <tr class={interval.type}>
-          <th>{i + 1}</th>
-          <td>{{ warmup: '🧘', run: '🏃', walk: '🚶' }[interval.type]}</td>
-          <td>{interval.time} @ {interval.speed} mph</td>
-          <td>
-            Stoping at {interval.distSoFar.toFixed(2)} mile / {(interval.distSoFar * 1.60934).toFixed(2)}
-            km
-          </td>
-        </tr>
-      {/each}
-    </table>
-  </div>
-
+  {:else}
+    <div>Run {reps} x {rtime} min @ {rspeed} mph</div>
+    <div>Totaling {tdist} miles in {ttime} min</div>
+  {/if}
 </div>
