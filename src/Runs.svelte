@@ -1,13 +1,13 @@
 <script>
   import SpeedTime from "./SpeedTime.svelte";
 
-  export let reps = 3;
-  export let utime = 5;
-  export let uspeed = 3.2;
-  export let wtime = 1;
-  export let wspeed = 3.2;
-  export let rtime = 17;
-  export let rspeed = 4.4;
+  export let reps;
+  export let utime;
+  export let uspeed;
+  export let wtime;
+  export let wspeed;
+  export let rtime;
+  export let rspeed;
 
   let expanded = true;
 

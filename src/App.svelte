@@ -22,6 +22,10 @@
     });
     runs = runs;
   }
+  if (runs.length === 0) {
+    maxID = 0;
+    addARun();
+  }
 </script>
 
 <style>
@@ -37,8 +41,15 @@
   on:sort={ev => {
     runs = ev.detail;
   }}
-  let:item>
-  <Runs {...item} />
+  let:index>
+  <Runs
+    bind:reps={runs[index].reps}
+    bind:utime={runs[index].utime}
+    bind:uspeed={runs[index].uspeed}
+    bind:wtime={runs[index].wtime}
+    bind:wspeed={runs[index].wspeed}
+    bind:rtime={runs[index].rtime}
+    bind:rspeed={runs[index].rspeed} />
 </SortableList>
 <button on:click={addARun}>+</button>
 <button
