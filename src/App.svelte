@@ -1,12 +1,17 @@
 <script>
   import Runs from "./Runs.svelte";
+  import SortableList from "svelte-sortable-list";
 
   let runs = JSON.parse(localStorage.getItem("runs")) || [];
+
+  let maxID = Math.max(...runs.map(r => r.id)) || 0;
 
   $: localStorage.setItem("runs", JSON.stringify(runs));
 
   function addARun() {
+    maxID += 1;
     runs.push({
+      id: maxID,
       reps: 3,
       utime: 5,
       uspeed: 3.2,
@@ -17,9 +22,6 @@
     });
     runs = runs;
   }
-  if (runs.length === 0) {
-    addARun();
-  }
 </script>
 
 <style>
@@ -29,17 +31,20 @@
 </style>
 
 <h1>Let's plan a run! :)</h1>
-<ol>
-  {#each runs as run}
-    <li>
-      <Runs {...runs} />
-    </li>
-  {/each}
-</ol>
+<SortableList
+  bind:list={runs}
+  key="id"
+  on:sort={ev => {
+    runs = ev.detail;
+  }}
+  let:item>
+  <Runs {...item} />
+</SortableList>
 <button on:click={addARun}>+</button>
 <button
   on:click={() => {
+    maxID = 0;
     runs = [];
   }}>
-  Clere All
+  Clear All
 </button>

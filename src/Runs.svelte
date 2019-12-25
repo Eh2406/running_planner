@@ -11,7 +11,6 @@
 
   let expanded = true;
 
-
   $: udist = (utime / 60) * uspeed;
   $: rdist = (rtime / 60) * rspeed;
   $: wdist = (wtime / 60) * wspeed;
