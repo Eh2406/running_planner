@@ -1,5 +1,8 @@
 <script>
   import SpeedTime from "./SpeedTime.svelte";
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
 
   export let reps;
   export let utime;
@@ -96,6 +99,7 @@
     display: inline-block;
   }
   .all {
+    position: relative;
     display: flex;
     justify-content: space-evenly;
     background-color: lightgray;
@@ -103,10 +107,29 @@
     padding: 15px;
     border-radius: 20px;
   }
+  .controls {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+  }
 </style>
 
 <div class="all">
-  <input type="checkbox" bind:checked={expanded} />
+  <div class="controls">
+    <button
+      on:click={() => {
+        expanded = !expanded;
+      }}>
+      {#if expanded}-{:else}+{/if}
+    </button>
+    <button
+      on:click={() => {
+        dispatch('dell');
+      }}>
+      x
+    </button>
+  </div>
   {#if expanded}
     <div class="form">
       <div>
@@ -174,7 +197,7 @@
       </table>
     </div>
   {:else}
-    <div>Run {reps} x {rtime} min @ {rspeed} mph</div>
-    <div>Totaling {tdist} miles in {ttime} min</div>
+    <div>Run {reps} x {rtime.toFixed(2)} min @ {rspeed.toFixed(2)} mph</div>
+    <div>Totaling {tdist.toFixed(2)} miles in {ttime.toFixed(2)} min</div>
   {/if}
 </div>

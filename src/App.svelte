@@ -49,7 +49,11 @@
     bind:wtime={runs[index].wtime}
     bind:wspeed={runs[index].wspeed}
     bind:rtime={runs[index].rtime}
-    bind:rspeed={runs[index].rspeed} />
+    bind:rspeed={runs[index].rspeed}
+    on:dell={() => {
+      runs.splice(index, 1);
+      runs = runs;
+    }} />
 </SortableList>
 <button on:click={addARun}>+</button>
 <button
