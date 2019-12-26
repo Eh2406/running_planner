@@ -91,10 +91,6 @@
   .row-cart > div {
     display: inline-block;
   }
-  .form {
-    display: inline-grid;
-    grid-template-columns: repeat(3, max-content);
-  }
   .report {
     display: inline-block;
   }
@@ -131,17 +127,25 @@
     </button>
   </div>
   {#if expanded}
-    <div class="form">
-      <div>
-        <label>Reps:</label>
-        <input
-          type="number"
-          bind:value={reps}
-          name="reps"
-          min="1"
-          max="10"
-          step="1" />
-      </div>
+    <table>
+      <tr>
+        <th>Reps:</th>
+        <td>
+          <input
+            type="number"
+            bind:value={reps}
+            name="reps"
+            min="1"
+            max="10"
+            step="1" />
+        </td>
+      </tr>
+      <tr>
+        <th />
+        <th>Speed (mph)</th>
+        <th>Time (min)</th>
+        <th>Dist (mile)</th>
+      </tr>
       <SpeedTime
         preaf="Warmup"
         bind:speed={uspeed}
@@ -157,7 +161,7 @@
         bind:speed={rspeed}
         bind:time={rtime}
         bind:dist={rdist} />
-    </div>
+    </table>
     <div class="report">
       <h2>This will take {ttime.toFixed(2)} min</h2>
       <div class="row-cart">
@@ -181,21 +185,20 @@
           </div>
         {/each}
       </div>
-      <br />
-      <table>
-        {#each arrayOfIntervals as interval, i}
-          <tr class={interval.type}>
-            <th>{i + 1}</th>
-            <td>{{ warmup: '🧘', run: '🏃', walk: '🚶' }[interval.type]}</td>
-            <td>{interval.time} @ {interval.speed} mph</td>
-            <td>
-              Stoping at {interval.distSoFar.toFixed(2)} mile / {(interval.distSoFar * 1.60934).toFixed(2)}
-              km
-            </td>
-          </tr>
-        {/each}
-      </table>
     </div>
+    <table>
+      {#each arrayOfIntervals as interval, i}
+        <tr class={interval.type}>
+          <th>{i + 1}</th>
+          <td>{{ warmup: '🧘', run: '🏃', walk: '🚶' }[interval.type]}</td>
+          <td>{interval.time} @ {interval.speed} mph</td>
+          <td>
+            Stoping at {interval.distSoFar.toFixed(2)} mile / {(interval.distSoFar * 1.60934).toFixed(2)}
+            km
+          </td>
+        </tr>
+      {/each}
+    </table>
   {:else}
     <div>Run {reps} x {rtime.toFixed(2)} min @ {rspeed.toFixed(2)} mph</div>
     <div>Totaling {tdist.toFixed(2)} miles in {ttime.toFixed(2)} min</div>
