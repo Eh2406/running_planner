@@ -11,11 +11,12 @@
   <label>{preaf}-speed:</label>
   <input
     type="number"
-    bind:value={speed}
+    value={speed}
     min="1"
     max="7"
     step="0.1"
-    on:change={() => {
+    on:input={event => {
+      speed = +event.target.value;
       if (pined) {
         time = +(pinedDist / speed).toFixed(2);
       }
@@ -26,11 +27,12 @@
   <label>{preaf}-time:</label>
   <input
     type="number"
-    bind:value={time}
+    value={time}
     min="1"
     max="80"
     step="0.25"
-    on:change={() => {
+    on:input={event => {
+      time = +event.target.value;
       if (pined) {
         speed = +(pinedDist / time).toFixed(2);
       }
@@ -40,7 +42,10 @@
 <div>
   <input
     type="checkbox"
-    bind:checked={pined}
-    on:change={() => (pinedDist = speed * time)} />
+    checked={pined}
+    on:input={function() {
+      pined = this.checked;
+      pinedDist = speed * time;
+    }} />
   {dist.toFixed(2)} mile
 </div>
