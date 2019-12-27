@@ -53,6 +53,13 @@
     on:dell={() => {
       runs.splice(index, 1);
       runs = runs;
+    }}
+    on:duplicate={() => {
+      maxID += 1;
+      let new_run = Object.assign({}, runs[index]);
+      new_run.id = maxID;
+      runs.splice(index + 1, 0, new_run);
+      runs = runs;
     }} />
 </SortableList>
 <button on:click={addARun}>+</button>

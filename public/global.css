@@ -59,3 +59,14 @@ button:active {
 button:focus {
 	border-color: #666;
 }
+
+@media print {
+	button {
+		display: none;
+	}
+
+	div {
+		margin: 2.5px !important;
+		padding: 2.5px !important;
+	}
+ }

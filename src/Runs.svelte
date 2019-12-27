@@ -121,6 +121,12 @@
     </button>
     <button
       on:click={() => {
+        dispatch('duplicate');
+      }}>
+      duplicate
+    </button>
+    <button
+      on:click={() => {
         dispatch('dell');
       }}>
       x
