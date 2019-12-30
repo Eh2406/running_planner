@@ -4,8 +4,7 @@
   export let time;
   export let dist;
   export let willChange = "d";
-  export let pined = false;
-  function fixUp() {
+  $: {
     if (willChange === "d") {
       dist = (time / 60) * speed;
     } else if (willChange === "s") {
@@ -14,7 +13,6 @@
       time = (dist * 60) / speed;
     }
   }
-  fixUp();
 </script>
 
 <tr style="grid-column: 1;">
@@ -29,15 +27,6 @@
       step="0.1"
       on:input={event => {
         speed = +event.target.value;
-        if (pined) {
-          if (willChange === 'd') {
-            time = (dist * 60) / speed;
-          } else if (willChange === 't') {
-            dist = (time / 60) * speed;
-          }
-        } else {
-          fixUp();
-        }
       }} />
   </td>
   <td>
@@ -50,15 +39,6 @@
       step="0.25"
       on:input={event => {
         time = +event.target.value;
-        if (pined) {
-          if (willChange === 'd') {
-            speed = (dist * 60) / time;
-          } else if (willChange === 's') {
-            dist = (time / 60) * speed;
-          }
-        } else {
-          fixUp();
-        }
       }} />
   </td>
   <td>
@@ -71,15 +51,6 @@
       step="0.25"
       on:input={event => {
         dist = +event.target.value;
-        if (pined) {
-          if (willChange === 's') {
-            time = (dist * 60) / speed;
-          } else if (willChange === 't') {
-            speed = (dist * 60) / time;
-          }
-        } else {
-          fixUp();
-        }
       }} />
   </td>
 </tr>

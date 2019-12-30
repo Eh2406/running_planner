@@ -13,7 +13,6 @@
   export let rspeed;
 
   let willChange = "d";
-  let pined = false;
 
   let expanded = true;
 
@@ -151,7 +150,6 @@
       </tr>
       <tr>
         <th>
-          <input type="checkbox" bind:checked={pined} />
         </th>
         <th
           on:click={_ => {
@@ -177,22 +175,19 @@
         bind:speed={uspeed}
         bind:time={utime}
         bind:dist={udist}
-        {willChange}
-        {pined} />
+        {willChange}/>
       <SpeedTime
         preaf="Walk"
         bind:speed={wspeed}
         bind:time={wtime}
         bind:dist={wdist}
-        {willChange}
-        {pined} />
+        {willChange} />
       <SpeedTime
         preaf="Run"
         bind:speed={rspeed}
         bind:time={rtime}
         bind:dist={rdist}
-        {willChange}
-        {pined} />
+        {willChange} />
     </table>
     <div class="report">
       <h2>This will take {ttime.toFixed(2)} min</h2>
@@ -223,7 +218,7 @@
         <tr class={interval.type}>
           <th>{i + 1}</th>
           <td>{{ warmup: '🧘', run: '🏃', walk: '🚶' }[interval.type]}</td>
-          <td>{interval.time} @ {interval.speed} mph</td>
+          <td>{interval.time.toFixed(2)} @ {interval.speed.toFixed(2)} mph</td>
           <td>
             Stoping at {interval.distSoFar.toFixed(2)} mile / {(interval.distSoFar * 1.60934).toFixed(2)}
             km
