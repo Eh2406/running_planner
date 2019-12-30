@@ -39,10 +39,6 @@ input, button, select, textarea {
 	border-radius: 2px;
 }
 
-input:disabled {
-	color: #ccc;
-}
-
 input[type="range"] {
 	height: 0;
 }

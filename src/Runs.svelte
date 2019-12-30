@@ -12,11 +12,14 @@
   export let rtime;
   export let rspeed;
 
+  let willChange = "d";
+  let pined = false;
+
   let expanded = true;
 
-  $: udist = (utime / 60) * uspeed;
-  $: rdist = (rtime / 60) * rspeed;
-  $: wdist = (wtime / 60) * wspeed;
+  let udist = 0;
+  let rdist = 0;
+  let wdist = 0;
 
   $: ttime = 2 * utime + reps * (wtime + rtime) - wtime;
   $: tdist = 2 * udist + reps * (wdist + rdist) - wdist;
@@ -147,26 +150,49 @@
         </td>
       </tr>
       <tr>
-        <th />
-        <th>Speed (mph)</th>
-        <th>Time (min)</th>
-        <th>Dist (mile)</th>
+        <th>
+          <input type="checkbox" bind:checked={pined} />
+        </th>
+        <th
+          on:click={_ => {
+            willChange = 's';
+          }}>
+          Speed (mph)
+        </th>
+        <th
+          on:click={_ => {
+            willChange = 't';
+          }}>
+          Time (min)
+        </th>
+        <th
+          on:click={_ => {
+            willChange = 'd';
+          }}>
+          Dist (mile)
+        </th>
       </tr>
       <SpeedTime
         preaf="Warmup"
         bind:speed={uspeed}
         bind:time={utime}
-        bind:dist={udist} />
+        bind:dist={udist}
+        {willChange}
+        {pined} />
       <SpeedTime
         preaf="Walk"
         bind:speed={wspeed}
         bind:time={wtime}
-        bind:dist={wdist} />
+        bind:dist={wdist}
+        {willChange}
+        {pined} />
       <SpeedTime
         preaf="Run"
         bind:speed={rspeed}
         bind:time={rtime}
-        bind:dist={rdist} />
+        bind:dist={rdist}
+        {willChange}
+        {pined} />
     </table>
     <div class="report">
       <h2>This will take {ttime.toFixed(2)} min</h2>
