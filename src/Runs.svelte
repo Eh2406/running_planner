@@ -20,6 +20,8 @@
   let rdist = 0;
   let wdist = 0;
 
+  let resets = [];
+
   $: ttime = 2 * utime + reps * (wtime + rtime) - wtime;
   $: tdist = 2 * udist + reps * (wdist + rdist) - wdist;
 
@@ -37,6 +39,9 @@
       timeSoFar,
       distSoFar
     });
+    if (resets[out.length - 1]) {
+      timeSoFar = distSoFar = 0;
+    }
 
     for (let i = 0; i < reps; i += 1) {
       timeSoFar += rtime;
@@ -49,6 +54,9 @@
         timeSoFar,
         distSoFar
       });
+      if (resets[out.length - 1]) {
+        timeSoFar = distSoFar = 0;
+      }
       if (i + 1 !== reps) {
         timeSoFar += wtime;
         distSoFar += wdist;
@@ -60,6 +68,9 @@
           timeSoFar,
           distSoFar
         });
+        if (resets[out.length - 1]) {
+          timeSoFar = distSoFar = 0;
+        }
       }
     }
 
@@ -73,6 +84,9 @@
       timeSoFar,
       distSoFar
     });
+    if (resets[out.length - 1]) {
+      timeSoFar = distSoFar = 0;
+    }
     return out;
   })();
 </script>
@@ -110,6 +124,14 @@
     top: 0;
     right: 0;
     margin: 10px;
+  }
+  .resets td,
+  .resets th {
+    border-bottom: 5px solid black;
+  }
+  .need-resets td,
+  .need-resets th {
+    border-bottom: 5px solid red;
   }
 </style>
 
@@ -149,8 +171,7 @@
         </td>
       </tr>
       <tr>
-        <th>
-        </th>
+        <th />
         <th
           on:click={_ => {
             willChange = 's';
@@ -175,7 +196,7 @@
         bind:speed={uspeed}
         bind:time={utime}
         bind:dist={udist}
-        {willChange}/>
+        {willChange} />
       <SpeedTime
         preaf="Walk"
         bind:speed={wspeed}
@@ -215,13 +236,21 @@
     </div>
     <table>
       {#each arrayOfIntervals as interval, i}
-        <tr class={interval.type}>
+        <tr
+          class={interval.type}
+          class:resets={!!resets[i]}
+          class:need-resets={interval.timeSoFar > 60}
+          on:click={() => {
+            resets[i] = !resets[i];
+          }}>
           <th>{i + 1}</th>
-          <td>{{ warmup: '🧘', run: '🏃', walk: '🚶' }[interval.type]}</td>
+          <td>
+            {{ warmup: '🧘', run: '🏃', walk: '🚶' }[interval.type] || ''}
+          </td>
           <td>{interval.time.toFixed(2)} @ {interval.speed.toFixed(2)} mph</td>
           <td>
-            Stoping at {interval.distSoFar.toFixed(2)} mile / {(interval.distSoFar * 1.60934).toFixed(2)}
-            km
+            Stoping at {interval.distSoFar.toFixed(2)} mile | {interval.timeSoFar.toFixed(2)}
+            min
           </td>
         </tr>
       {/each}
