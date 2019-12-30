@@ -7,11 +7,11 @@
   export let pined = false;
   function fixUp() {
     if (willChange === "d") {
-      dist = +((time / 60) * speed).toFixed(2);
+      dist = (time / 60) * speed;
     } else if (willChange === "s") {
-      speed = +((dist * 60) / time).toFixed(2);
+      speed = (dist * 60) / time;
     } else if (willChange === "t") {
-      time = +((dist * 60) / speed).toFixed(2);
+      time = (dist * 60) / speed;
     }
   }
   fixUp();
@@ -23,7 +23,7 @@
     <input
       type="number"
       disabled={willChange === 's'}
-      value={speed}
+      value={speed.toFixed(2)}
       min="1"
       max="7"
       step="0.1"
@@ -31,9 +31,9 @@
         speed = +event.target.value;
         if (pined) {
           if (willChange === 'd') {
-            time = +((dist * 60) / speed).toFixed(2);
+            time = (dist * 60) / speed;
           } else if (willChange === 't') {
-            dist = +((time / 60) * speed).toFixed(2);
+            dist = (time / 60) * speed;
           }
         } else {
           fixUp();
@@ -44,7 +44,7 @@
     <input
       type="number"
       disabled={willChange === 't'}
-      value={time}
+      value={time.toFixed(2)}
       min="1"
       max="80"
       step="0.25"
@@ -52,9 +52,9 @@
         time = +event.target.value;
         if (pined) {
           if (willChange === 'd') {
-            speed = +((dist * 60) / time).toFixed(2);
+            speed = (dist * 60) / time;
           } else if (willChange === 's') {
-            dist = +((time / 60) * speed).toFixed(2);
+            dist = (time / 60) * speed;
           }
         } else {
           fixUp();
@@ -65,7 +65,7 @@
     <input
       type="number"
       disabled={willChange === 'd'}
-      value={dist}
+      value={dist.toFixed(2)}
       min="0"
       max="10"
       step="0.25"
@@ -73,9 +73,9 @@
         dist = +event.target.value;
         if (pined) {
           if (willChange === 's') {
-            time = +((dist * 60) / speed).toFixed(2);
+            time = (dist * 60) / speed;
           } else if (willChange === 't') {
-            speed = +((dist * 60) / time).toFixed(2);
+            speed = (dist * 60) / time;
           }
         } else {
           fixUp();
