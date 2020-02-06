@@ -25,7 +25,7 @@
       min="1"
       max="7"
       step="0.1"
-      on:input={event => {
+      on:change={event => {
         speed = +event.target.value;
       }} />
   </td>
@@ -37,7 +37,7 @@
       min="1"
       max="80"
       step="0.25"
-      on:input={event => {
+      on:change={event => {
         time = +event.target.value;
       }} />
   </td>
@@ -49,7 +49,7 @@
       min="0"
       max="10"
       step="0.25"
-      on:input={event => {
+      on:change={event => {
         dist = +event.target.value;
       }} />
   </td>
