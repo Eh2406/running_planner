@@ -9,19 +9,26 @@
   export let uspeed;
   export let wtime;
   export let wspeed;
-  export let rtime;
-  export let rspeed;
+  export let rdata;
 
   let willChange = "d";
 
   let udist = 0;
-  let rdist = 0;
+  let rdists = rdata.map(_ => 0);
   let wdist = 0;
 
   let resets = [];
 
-  $: ttime = 2 * utime + reps * (wtime + rtime) - wtime;
-  $: tdist = 2 * udist + reps * (wdist + rdist) - wdist;
+  $: ttime =
+    2 * utime +
+    (reps - 1) * wtime +
+    (rdata.length === 1
+      ? reps * rdata[0][0]
+      : rdata.reduce((t, r) => t + r[0], 0));
+  $: tdist =
+    2 * udist +
+    (reps - 1) * wdist +
+    (rdata.length === 1 ? reps * rdists[0] : rdists.reduce((t, r) => t + r, 0));
 
   $: arrayOfIntervals = (() => {
     let timeSoFar = 0;
@@ -42,6 +49,18 @@
     }
 
     for (let i = 0; i < reps; i += 1) {
+      let rtime;
+      let rspeed;
+      let rdist;
+      if (rdata.length === 1) {
+        rtime = rdata[0][0];
+        rspeed = rdata[0][1];
+        rdist = rdists[0];
+      } else {
+        rtime = rdata[i][0];
+        rspeed = rdata[i][1];
+        rdist = rdists[i];
+      }
       timeSoFar += rtime;
       distSoFar += rdist;
       out.push({
@@ -160,6 +179,25 @@
           max="10"
           step="1" />
       </td>
+      {#if reps > 1}
+        <td>
+          <button
+            on:click={() => {
+              if (rdata.length === 1) {
+                var data = [];
+                for (var i = 0; i < reps; i++) {
+                  data.push(rdata[0].slice());
+                }
+                rdata = data;
+              } else {
+                rdata = [rdata[0]];
+              }
+              rdists = rdata.map(_ => 0);
+            }}>
+            {#if rdata.length !== 1}-{:else}+{/if}
+          </button>
+        </td>
+      {/if}
     </tr>
     <tr>
       <th />
@@ -194,12 +232,14 @@
       bind:time={wtime}
       bind:dist={wdist}
       {willChange} />
-    <SpeedTime
-      preaf="Run"
-      bind:speed={rspeed}
-      bind:time={rtime}
-      bind:dist={rdist}
-      {willChange} />
+    {#each rdata as r, i}
+      <SpeedTime
+        preaf="Run"
+        bind:speed={rdata[i][1]}
+        bind:time={rdata[i][0]}
+        bind:dist={rdists[i]}
+        {willChange} />
+    {/each}
   </table>
   <div class="report">
     <h2>This will take {ttime.toFixed(2)} min</h2>

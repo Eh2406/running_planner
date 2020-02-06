@@ -8,6 +8,10 @@
 
   $: localStorage.setItem("runs", JSON.stringify(runs));
 
+  window.onerror = _ => {
+    localStorage.setItem("runs", JSON.stringify([]));
+  };
+
   function addARun() {
     maxID += 1;
     runs.push({
@@ -17,8 +21,7 @@
       uspeed: 3.2,
       wtime: 1,
       wspeed: 3.2,
-      rtime: 17,
-      rspeed: 4.4
+      rdata: [[17, 4.6]]
     });
     runs = runs;
   }
@@ -48,8 +51,7 @@
     bind:uspeed={runs[index].uspeed}
     bind:wtime={runs[index].wtime}
     bind:wspeed={runs[index].wspeed}
-    bind:rtime={runs[index].rtime}
-    bind:rspeed={runs[index].rspeed}
+    bind:rdata={runs[index].rdata}
     on:dell={() => {
       runs.splice(index, 1);
       runs = runs;
