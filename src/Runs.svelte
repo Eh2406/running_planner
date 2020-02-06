@@ -173,11 +173,23 @@
       <td>
         <input
           type="number"
-          bind:value={reps}
+          value={reps}
           name="reps"
           min="1"
           max="10"
-          step="1" />
+          step="1"
+          on:change={event => {
+            reps = +event.target.value;
+            if (reps < rdata.length) {
+              rdata = rdata.slice(0, reps);
+            } else if (rdata.length !== 1) {
+              while (reps > rdata.length) {
+                rdata.push(rdata[0].slice());
+              }
+              rdata = rdata;
+            }
+            rdists = rdata.map(_ => 0);
+          }} />
       </td>
       {#if reps > 1}
         <td>
